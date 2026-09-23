@@ -5,11 +5,11 @@ Build a polished, image-led hospitality website around **Stay. Meet. Explore.** 
 
 The repository currently contains no Kongoni photography or logo. The first version will use clearly labelled, well-proportioned image placeholders that can be replaced directly when the real assets arrive; no stock imagery or unsupported visual claims will be introduced.
 
-## Site structure
-- Create a shared responsive header, mobile menu, footer, and sticky mobile action bar for Call, WhatsApp, and Enquire.
-- Build distinct pages for Home, Stay, Meetings & Events, Dining, Explore Nanyuki, Gallery, and Contact.
-- Keep the homepage editorial and visual, featuring the requested overview, audiences, accommodation preview, meetings, groups, dining, regional exploration, travel trade, verified facts, gallery preview, FAQ, enquiry prompt, and final call to action.
-- Give each page unique search and social metadata, plus suitable Hotel/LodgingBusiness, FAQ, and breadcrumb structured data.
+## Landing-page structure
+- Build one long scrolling landing page with anchored sections for Stay, Meetings & Events, Dining, Explore Nanyuki, Gallery, and Contact.
+- Create a responsive header, mobile menu, footer, and sticky mobile action bar for Call, WhatsApp, and Enquire.
+- Keep the page editorial and visual, featuring the requested overview, audiences, accommodation, meetings, groups, dining, regional exploration, travel trade, verified facts, gallery, FAQ, enquiry prompt, and final call to action.
+- Add page-specific search and social metadata plus suitable Hotel/LodgingBusiness and FAQ structured data.
 
 ## Visual direction
 - Use deep green, earthy brown, warm cream, charcoal, and one restrained accent, all defined as reusable design tokens.
@@ -37,6 +37,6 @@ The repository currently contains no Kongoni photography or logo. The first vers
 - When the real repository photos arrive, audit each file, classify its subject, create responsive WebP/AVIF renditions, and map distinct images to rooms, grounds, dining, meetings, outdoors, and Nanyuki.
 
 ## Verification
-- Check all routes and navigation on desktop and mobile.
+- Check all anchored sections and navigation on desktop and mobile.
 - Test the mobile menu, sticky actions, gallery filters/lightbox, FAQ, enquiry validation/fallback, social links, directions, and map rendering.
 - Confirm there are no broken links, overflow, overlapping text, invented testimonials, or unlabelled placeholder imagery.
