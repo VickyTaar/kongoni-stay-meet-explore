@@ -1,24 +1,24 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import {
   ArrowDown,
   ArrowRight,
-  Building2,
   CalendarDays,
+  Check,
   ChevronDown,
+  Clock,
   Compass,
   ExternalLink,
   Facebook,
   Instagram,
   Mail,
   MapPin,
-  Menu,
   MessageCircle,
-  Mountain,
   Phone,
-  Plane,
+  Sparkles,
   Trees,
   Users,
   UtensilsCrossed,
+  Waves,
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -28,415 +28,958 @@ const phoneHref = "+254702868888";
 const whatsappUrl = "https://wa.me/254702868888";
 const email = "reservations@kongonicamp.com";
 
-type PlaceholderProps = {
-  label: string;
-  className?: string;
-  priority?: boolean;
-};
-
-function PhotoPlaceholder({ label, className = "", priority = false }: PlaceholderProps) {
-  return (
-    <div
-      className={`photo-placeholder ${className}`}
-      role="img"
-      aria-label={`${label} — Kongoni Camp photograph to be added`}
-      data-priority={priority ? "true" : undefined}
-    >
-      <div className="photo-placeholder__mark" aria-hidden="true">
-        <Mountain />
-      </div>
-      <span>Kongoni Camp photography</span>
-      <strong>{label}</strong>
-    </div>
-  );
-}
-
-const navigation = [
-  ["Stay", "#stay"],
-  ["Meetings & Events", "#meet"],
-  ["Dining", "#dining"],
-  ["Explore Nanyuki", "#explore"],
-  ["Gallery", "#gallery"],
-  ["Contact", "#contact"],
-] as const;
-
-const stays = [
+const galleryPhotos = [
   {
-    name: "Traditional Rondavels",
-    copy: "Distinctive round cottages for a relaxed stay at the camp.",
-    image: "Traditional rondavel exterior and interior",
+    src: "/kongoni-camp-nanyuki4.jpg",
+    title: "Traditional Thatched Rondavels",
+    caption: "Authentic round thatched cottages nestled along stone paths and lush flowering gardens.",
+    tag: "Exterior & Grounds",
+    span: "gallery-wide",
   },
   {
-    name: "Deluxe Suites",
-    copy: "A comfortable option for travellers spending time in Nanyuki.",
-    image: "Deluxe suite",
+    src: "/superior-deluxe-room_006.jpg",
+    title: "Superior Deluxe Suite",
+    caption: "Spacious master suite featuring vaulted wooden beams, lounge area, leopard artwork, and stone floors.",
+    tag: "Accommodation",
+    span: "gallery-tall",
   },
+  {
+    src: "/kongoni-camp-nanyuki1.jpg",
+    title: "Forest-Fringed Swimming Pool",
+    caption: "Sparkling outdoor swimming pool bordered by native trees, sun umbrellas, and comfortable loungers.",
+    tag: "Pool & Leisure",
+    span: "gallery-wide",
+  },
+  {
+    src: "/kongoni-camp-nanyuki restaurant.jpg",
+    title: "Rustic Lodge Restaurant & Bar",
+    caption: "Cozy timber-framed dining lounge with open fireplace stove, African tapestries, and fully stocked bar.",
+    tag: "Dining & Social",
+    span: "",
+  },
+  {
+    src: "/kongoni-camp-nanyuki5.jpg",
+    title: "Warm Cottage Bedroom",
+    caption: "Comfortable double room with handcrafted batik textiles, mosquito net canopy, and tranquil garden views.",
+    tag: "Accommodation",
+    span: "",
+  },
+  {
+    src: "/poolside-spa_03.jpg",
+    title: "Poolside Spa Pavilion",
+    caption: "Traditional thatched wellness pavilion overlooking immaculate lawns and the swimming pool.",
+    tag: "Spa & Grounds",
+    span: "gallery-wide",
+  },
+  {
+    src: "/kongoni-camp-nanyuki_006.jpg",
+    title: "Lush Camp Walkways",
+    caption: "Mature indigenous trees and tropical flora framing private cottage verandas.",
+    tag: "Grounds & Nature",
+    span: "",
+  },
+];
+
+const staysList = [
   {
     name: "Superior Deluxe Suites",
-    copy: "A spacious accommodation choice for short or longer stays.",
-    image: "Superior deluxe suite",
+    type: "Spacious & Elegant",
+    copy: "Our most expansive accommodation featuring high vaulted timber ceilings, generous seating lounge, stone flooring, African wildlife art, en-suite bathroom, and dedicated workspace.",
+    image: "/superior-deluxe-room_006.jpg",
+    highlights: ["King Bed & Lounge Area", "Vaulted Timber Ceilings", "En-suite Bathroom & Wi-Fi", "Writing Desk & Veranda"],
   },
   {
-    name: "Standard Rooms",
-    copy: "Practical accommodation for individual travellers and groups.",
-    image: "Standard room",
+    name: "Traditional Rondavels",
+    type: "Signature African Cottages",
+    copy: "Distinctive round thatched cottages set amidst flowering shrubs and mature trees. Combining genuine Kenyan character with peaceful comfort and privacy.",
+    image: "/kongoni-camp-nanyuki4.jpg",
+    highlights: ["Authentic Thatch Architecture", "Stone Garden Pathways", "Quiet Forest Ambience", "Private Veranda"],
   },
-] as const;
+  {
+    name: "Deluxe Cottage Rooms",
+    type: "Warm & Atmospheric",
+    copy: "Intimate and comfortable rooms appointed with handcrafted batik art, warm hearth lighting, comfortable bedding, and garden outlooks for restful stays.",
+    image: "/kongoni-camp-nanyuki5.jpg",
+    highlights: ["Handcrafted Textiles", "Bed Canopy / Net", "Cozy Fireside Feel", "Garden Views"],
+  },
+  {
+    name: "Garden Cottages & Group Stays",
+    type: "Serene & Relaxed",
+    copy: "Cottages surrounded by tranquil greenery, designed for families, safari travellers, tour groups, and retreat delegates seeking a comfortable base in Nanyuki.",
+    image: "/kongoni-camp-nanyuki_006.jpg",
+    highlights: ["Interconnecting Options", "Lush Lawn Setting", "Ample Natural Light", "Ideal for Groups"],
+  },
+];
 
 const audiences = [
-  ["Leisure Travellers", "A comfortable base for exploring Nanyuki and Laikipia.", Compass, "#explore"],
-  ["Families & Couples", "A relaxed place to stay while discovering the area.", Users, "#stay"],
-  ["Tour Operators", "A convenient stop for guests on organised itineraries.", Plane, "#travel-trade"],
-  ["Groups", "A practical setting for organised trips, stays and programmes.", Building2, "#groups"],
-  ["Organisations", "Options for meetings, training and residential programmes.", CalendarDays, "#meet"],
-  ["Events & Meetings", "Spaces for conferences, workshops and gatherings.", Users, "#meet"],
-] as const;
-
-const galleryItems = [
-  ["The Camp", "Camp grounds and shared spaces", "gallery-tall"],
-  ["Rooms", "Kongoni guest room", ""],
-  ["Suites", "Kongoni suite", ""],
-  ["Dining", "Food and dining at Kongoni", "gallery-wide"],
-  ["Meetings", "Meeting and workshop space", ""],
-  ["Outdoors", "Outdoor space at Kongoni", "gallery-tall"],
-  ["Around Nanyuki", "The Nanyuki and Laikipia landscape", "gallery-wide"],
-] as const;
+  {
+    title: "Safari & Holiday Travellers",
+    desc: "A relaxed, character-filled haven just minutes from Ol Pejeta Conservancy and Mount Kenya.",
+    icon: Compass,
+  },
+  {
+    title: "Couples & Families",
+    desc: "Peaceful gardens, swimming pool, open lawns, and spacious cottages for quality time together.",
+    icon: Users,
+  },
+  {
+    title: "Tour Operators & Agents",
+    desc: "Reliable accommodation partner with ample coach parking, seamless group check-ins, and bespoke catering.",
+    icon: MapPin,
+  },
+  {
+    title: "Conferences & Retreats",
+    desc: "Inspiring meeting spaces, high-speed Wi-Fi, and tranquil outdoor breakout spots for focused workshops.",
+    icon: CalendarDays,
+  },
+  {
+    title: "Team Building & Groups",
+    desc: "10 expansive acres of green grounds for dynamic outdoor team activities, sports, and group dining.",
+    icon: Trees,
+  },
+  {
+    title: "Dining & Events",
+    desc: "Cozy fireside restaurant, garden dining, barbecue events, and relaxed poolside drinks.",
+    icon: UtensilsCrossed,
+  },
+];
 
 const faqItems = [
-  ["Where is Kongoni Camp?", "Kongoni Camp is located along the A2 at the Nanyuki town gate, approximately 5 minutes from Nanyuki CBD."],
-  ["Is Kongoni suitable for tourists?", "Yes. Kongoni provides accommodation and a convenient base for guests exploring Nanyuki and Laikipia."],
-  ["Do you accommodate tour operators?", "Yes. Kongoni welcomes tour operators and travel partners bringing guests to Nanyuki."],
-  ["Can organisations hold meetings and retreats at Kongoni?", "Yes. The property can accommodate meetings, conferences, workshops, training programmes, retreats and team-building activities."],
-  ["Can groups stay at Kongoni?", "Yes. Kongoni has multiple accommodation options suitable for different types of travellers and groups."],
-  ["Does Kongoni provide catering?", "Yes. Catering options include continental, Indian and Japanese menus, with options available for different dietary requirements."],
-  ["How far is Kongoni from Nanyuki town?", "Kongoni is approximately 5 minutes from Nanyuki CBD."],
-] as const;
+  {
+    q: "Where is Kongoni Camp located?",
+    a: "Kongoni Camp is conveniently situated along the A2 highway right at the Nanyuki town gate — just 5 minutes from Nanyuki CBD and approximately 15 minutes from Nanyuki Airstrip.",
+  },
+  {
+    q: "Is Kongoni Camp suitable for leisure tourists and safari travellers?",
+    a: "Yes! Kongoni is a premier safari base for visiting Ol Pejeta Conservancy, hiking Mount Kenya, exploring Ngare Ndare Forest, and relaxing by our swimming pool in lush natural surroundings.",
+  },
+  {
+    q: "Can organisations hold meetings, workshops, and retreats at Kongoni?",
+    a: "Absolutely. We host corporate conferences, board retreats, NGO seminars, school programmes, and team-building retreats with full AV setup, tailored catering, and quiet indoor and outdoor spaces.",
+  },
+  {
+    q: "What dining options are available on-site?",
+    a: "Our rustic fireside restaurant serves freshly prepared continental, Kenyan, Indian, and selected Asian specialities, with full bar service and custom meal plans for residential groups.",
+  },
+  {
+    q: "Do you cater to tour operators and travel trade partners?",
+    a: "Yes. We work closely with tour operators and travel agents, offering competitive partner rates, driver/guide arrangements, and flexible group accommodation packages.",
+  },
+  {
+    q: "How can I make a reservation or enquiry?",
+    a: "You can submit the enquiry form below, call our reservations desk at +254 702 868 888, or click the WhatsApp button for instant assistance.",
+  },
+];
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return <p className="section-label">{children}</p>;
-}
-
-function Header() {
-  const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    if (!open) return;
-    const close = () => setOpen(false);
-    window.addEventListener("hashchange", close);
-    return () => window.removeEventListener("hashchange", close);
-  }, [open]);
-
+function SectionBadge({ children }: { children: React.ReactNode }) {
   return (
-    <header className="site-header">
-      <a href="#top" className="wordmark" aria-label="Kongoni Camp home">
-        <img
-          src="/kongoni logo.png"
-          alt="Kongoni Camp Nanyuki"
-          className="site-logo"
-          width={120}
-          height={52}
-        />
-      </a>
-      <nav className="desktop-nav" aria-label="Main navigation">
-        {navigation.map(([label, href]) => <a key={href} href={href}>{label}</a>)}
-      </nav>
-      <Button asChild variant="accent" className="desktop-cta"><a href="#contact">Book / Enquire</a></Button>
-      <Button
-        variant="ghost"
-        size="icon"
-        className="mobile-menu-button"
-        aria-label={open ? "Close menu" : "Open menu"}
-        aria-expanded={open}
-        onClick={() => setOpen((value) => !value)}
-      >
-        {open ? <X /> : <Menu />}
-      </Button>
-      {open && (
-        <div className="mobile-menu">
-          <nav aria-label="Mobile navigation">
-            {navigation.map(([label, href]) => <a key={href} href={href} onClick={() => setOpen(false)}>{label}<ArrowRight /></a>)}
-          </nav>
-          <Button asChild variant="accent" size="lg"><a href="#contact" onClick={() => setOpen(false)}>Book / Enquire</a></Button>
-        </div>
-      )}
-    </header>
+    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-accent/30 text-highlight border border-accent/40 mb-3">
+      {children}
+    </span>
   );
-}
-
-function Hero() {
-  return (
-    <section id="top" className="hero">
-      <PhotoPlaceholder label="Lead view of the camp and grounds" className="hero-photo" priority />
-      <div className="hero-shade" />
-      <div className="hero-content page-shell">
-        <p className="hero-location"><MapPin /> Nanyuki, Laikipia <span /> Along the A2</p>
-        <h1>Stay. Meet.<br />Explore Nanyuki.</h1>
-        <p className="hero-copy">Comfortable accommodation, spaces for meetings and events, catering and a natural base for exploring Nanyuki and Laikipia.</p>
-        <div className="hero-actions">
-          <Button asChild variant="accent" size="xl"><a href="#contact">Plan Your Stay <ArrowRight /></a></Button>
-          <Button asChild variant="heroOutline" size="xl"><a href="#intro">Explore Kongoni <ArrowDown /></a></Button>
-        </div>
-      </div>
-      <div className="hero-pillar" aria-label="Stay, meet and explore">
-        <span>Stay</span><i /><span>Meet</span><i /><span>Explore</span>
-      </div>
-    </section>
-  );
-}
-
-function Intro() {
-  return (
-    <section id="intro" className="editorial-section page-shell">
-      <div className="editorial-copy">
-        <SectionLabel>Welcome to Kongoni</SectionLabel>
-        <h2>A place for travellers, teams and everyone in between.</h2>
-        <p>Set on 10 acres along the A2 at the Nanyuki town gate, Kongoni Camp offers a relaxed setting close to Nanyuki CBD.</p>
-        <p>Whether you're stopping over, planning a Laikipia adventure, travelling with family, organising a group trip or bringing your team away, Kongoni gives you a place to stay, meet, eat and unwind.</p>
-        <Button asChild variant="text"><a href="#stay">Discover Kongoni <ArrowRight /></a></Button>
-      </div>
-      <PhotoPlaceholder label="Wide view across the Kongoni Camp property" className="intro-photo" />
-    </section>
-  );
-}
-
-function StaySection() {
-  return (
-    <section id="stay" className="section section-warm">
-      <div className="page-shell">
-        <div className="section-heading">
-          <div><SectionLabel>Stay</SectionLabel><h2>Find your place<br />at Kongoni.</h2></div>
-          <p>Four accommodation styles give individual travellers, couples, families and groups practical choices for short and longer stays.</p>
-        </div>
-        <div className="stay-grid">
-          {stays.map((stay, index) => (
-            <article className={`stay-item stay-item-${index + 1}`} key={stay.name}>
-              <PhotoPlaceholder label={stay.image} className="stay-photo" />
-              <div className="stay-copy"><span>0{index + 1}</span><h3>{stay.name}</h3><p>{stay.copy}</p><a href="#contact">Enquire about this stay <ArrowRight /></a></div>
-            </article>
-          ))}
-        </div>
-        <div className="center-action"><Button asChild size="lg"><a href="#contact">View Accommodation <ArrowRight /></a></Button></div>
-      </div>
-    </section>
-  );
-}
-
-function AudienceSection() {
-  return (
-    <section className="section page-shell audience-section">
-      <div className="section-heading compact">
-        <div><SectionLabel>Your kind of stay</SectionLabel><h2>However you're travelling, Kongoni has room for you.</h2></div>
-      </div>
-      <div className="audience-grid">
-        {audiences.map(([title, copy, Icon, href], index) => (
-          <a href={href} className="audience-item" key={title}>
-            <span className="audience-number">0{index + 1}</span><Icon /><h3>{title}</h3><p>{copy}</p><ArrowRight className="audience-arrow" />
-          </a>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function MeetingsSection() {
-  const uses = ["Board retreats", "Conferences", "Workshops", "Training", "Strategy sessions", "Team meetings", "Team-building programmes", "Group programmes"];
-  return (
-    <section id="meet" className="section section-forest">
-      <div className="page-shell meetings-layout">
-        <div className="meetings-images">
-          <PhotoPlaceholder label="Conference or workshop in progress" className="meeting-main" />
-          <PhotoPlaceholder label="Kongoni meeting setup" className="meeting-small" />
-        </div>
-        <div className="meetings-copy">
-          <SectionLabel>Meet</SectionLabel><h2>Bring people together.</h2>
-          <p>Kongoni provides a practical setting for organisations and groups looking for space to meet, work and spend time together.</p>
-          <ul>{uses.map((item) => <li key={item}><span />{item}</li>)}</ul>
-          <Button asChild variant="accent" size="lg"><a href="#contact">Plan a Meeting or Retreat <ArrowRight /></a></Button>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function GroupsAndDining() {
-  return (
-    <>
-      <section id="groups" className="split-feature">
-        <div className="split-feature__copy">
-          <SectionLabel>Events & groups</SectionLabel><h2>Space for groups, gatherings and occasions.</h2>
-          <p>Kongoni welcomes organised tours, group stays, training programmes, workshops, team-building activities, private events and social gatherings.</p>
-          <Button asChild variant="text"><a href="#contact">Talk to Us About Your Group <ArrowRight /></a></Button>
-        </div>
-        <PhotoPlaceholder label="Group gathering or outdoor event" className="split-feature__photo" />
-      </section>
-      <section id="dining" className="split-feature split-feature--reverse">
-        <PhotoPlaceholder label="Kongoni dining and food" className="split-feature__photo" />
-        <div className="split-feature__copy">
-          <SectionLabel>Dining</SectionLabel><h2>Good food, wherever the day takes you.</h2>
-          <p>Catering at Kongoni supports stays, meetings and group programmes, with continental, Indian and Japanese options available.</p>
-          <p>Different dietary requirements can be discussed when you enquire.</p>
-          <Button asChild variant="text"><a href="#contact">Explore Dining <ArrowRight /></a></Button>
-        </div>
-      </section>
-    </>
-  );
-}
-
-function ExploreSection() {
-  const destinations = [
-    ["Ol Pejeta Conservancy", "A major wildlife destination in Laikipia.", "Ol Pejeta wildlife landscape"],
-    ["Mount Kenya", "A defining landmark and major attraction around Nanyuki.", "Mount Kenya landscape"],
-    ["Mau Mau Caves", "A historic destination connected to Kenya's Mau Mau history.", "Mau Mau Caves"],
-    ["Mt Kenya Wildlife Conservancy", "A nearby conservation and wildlife attraction.", "Mount Kenya Wildlife Conservancy"],
-    ["Nanyuki Airstrip", "Convenient for guests travelling to Nanyuki by air.", "Nanyuki Airstrip"],
-  ];
-  return (
-    <section id="explore" className="section explore-section">
-      <div className="page-shell">
-        <div className="section-heading"><div><SectionLabel>Explore</SectionLabel><h2>Stay here.<br />Explore from here.</h2></div><p>Kongoni puts you within reach of some of Nanyuki and Laikipia's well-known attractions, making it a convenient base for exploring the region.</p></div>
-        <div className="destination-grid">
-          {destinations.map(([name, copy, label], index) => (
-            <article className={`destination destination-${index + 1}`} key={name}>
-              <PhotoPlaceholder label={label} className="destination-photo" />
-              <div><span>0{index + 1}</span><h3>{name}</h3><p>{copy}</p></div>
-            </article>
-          ))}
-        </div>
-        <div className="center-action"><Button asChild size="lg"><a href="#contact">Explore Nanyuki & Laikipia <ArrowRight /></a></Button></div>
-      </div>
-    </section>
-  );
-}
-
-function TravelTrade() {
-  const points = ["Convenient Nanyuki location", "Multiple accommodation options", "Group stays and catering", "Access to local attractions", "Easy access from the A2", "Close to Nanyuki CBD and the airstrip"];
-  return (
-    <section id="travel-trade" className="travel-trade">
-      <PhotoPlaceholder label="Tour guests arriving at Kongoni" className="travel-photo" />
-      <div className="travel-copy">
-        <SectionLabel>Travel trade</SectionLabel><h2>For tour operators and travel partners.</h2>
-        <p>Kongoni Camp welcomes travel partners looking for accommodation in Nanyuki for individual travellers, families, groups and organised itineraries.</p>
-        <ul>{points.map((point) => <li key={point}><ArrowRight />{point}</li>)}</ul>
-        <div className="button-row"><Button asChild variant="accent" size="lg"><a href="#contact">Talk to Our Travel Team</a></Button><Button asChild variant="heroOutline" size="lg"><a href={`mailto:${email}?subject=Kongoni Partner Information`}>Request Partner Information</a></Button></div>
-      </div>
-    </section>
-  );
-}
-
-function WhyNanyuki() {
-  return (
-    <section className="why-nanyuki">
-      <PhotoPlaceholder label="Wide Laikipia landscape near Nanyuki" className="why-photo" />
-      <div className="why-overlay page-shell">
-        <SectionLabel>Nanyuki & Laikipia</SectionLabel><h2>Nanyuki gives you plenty to do.</h2>
-        <p>From Mount Kenya and wildlife conservation to local history, outdoor experiences, Laikipia landscapes, restaurants and town life, Nanyuki opens the way to a varied part of Kenya.</p>
-      </div>
-    </section>
-  );
-}
-
-function Facts() {
-  const facts = [["10", "Acres", "A spacious camp environment."], ["5", "Minutes", "Approximately five minutes from Nanyuki CBD."], ["A2", "At the town gate", "Direct access from the main corridor."], ["4", "Stay options", "Multiple accommodation categories."], ["Meet", "On site", "Spaces for meetings, retreats and programmes."], ["Fly", "Into Nanyuki", "Convenient access from Nanyuki Airstrip."]];
-  return <section className="facts-section page-shell"><SectionLabel>Kongoni at a glance</SectionLabel><div className="facts-grid">{facts.map(([big, label, copy]) => <div key={label} className="fact"><strong>{big}</strong><h3>{label}</h3><p>{copy}</p></div>)}</div></section>;
-}
-
-function Gallery() {
-  const [filter, setFilter] = useState("All");
-  const [active, setActive] = useState<number | null>(null);
-  const categories = ["All", ...galleryItems.map(([category]) => category)];
-  const visible = galleryItems.map((item, index) => ({ item, index })).filter(({ item }) => filter === "All" || item[0] === filter);
-  return (
-    <section id="gallery" className="section section-warm gallery-section">
-      <div className="page-shell">
-        <div className="section-heading compact"><div><SectionLabel>Gallery</SectionLabel><h2>Take a look around.</h2></div></div>
-        <div className="gallery-filters" aria-label="Gallery categories">{categories.map((category) => <Button key={category} variant={filter === category ? "default" : "ghost"} size="sm" onClick={() => setFilter(category)}>{category}</Button>)}</div>
-        <div className="gallery-grid">
-          {visible.map(({ item: [category, label, shape], index }) => (
-            <button className={`gallery-item ${shape}`} key={category} onClick={() => setActive(index)} aria-label={`Open ${category} image`}>
-              <PhotoPlaceholder label={label} /><span>{category}<ExternalLink /></span>
-            </button>
-          ))}
-        </div>
-      </div>
-      {active !== null && (
-        <div className="lightbox" role="dialog" aria-modal="true" aria-label={`${galleryItems[active][0]} photograph`} onClick={() => setActive(null)}>
-          <Button variant="lightbox" size="icon" aria-label="Close image" onClick={() => setActive(null)}><X /></Button>
-          <PhotoPlaceholder label={galleryItems[active][1]} className="lightbox-photo" />
-          <p>{galleryItems[active][0]}</p>
-        </div>
-      )}
-    </section>
-  );
-}
-
-function EnquiryForm() {
-  const [notice, setNotice] = useState("");
-  const submit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const form = new FormData(event.currentTarget);
-    const lines = ["Kongoni Camp enquiry", "", ...Array.from(form.entries()).map(([key, value]) => `${key}: ${value}`)];
-    setNotice("Your enquiry is ready. Your email app will open so you can send it to reservations.");
-    window.location.href = `mailto:${email}?subject=${encodeURIComponent(`Kongoni enquiry — ${String(form.get("I'm enquiring about") || "Stay")}`)}&body=${encodeURIComponent(lines.join("\n"))}`;
-  };
-  return (
-    <form className="enquiry-form" onSubmit={submit}>
-      <label>Name<input name="Name" required autoComplete="name" /></label>
-      <label>Organisation <span>Optional</span><input name="Organisation" autoComplete="organization" /></label>
-      <label>Email<input name="Email" required type="email" autoComplete="email" /></label>
-      <label>Phone<input name="Phone" required type="tel" autoComplete="tel" /></label>
-      <label className="field-wide">I'm enquiring about<select name="I'm enquiring about" required defaultValue=""><option value="" disabled>Select one</option>{["Accommodation", "Group Stay", "Tour / Travel", "Meeting or Conference", "Retreat", "Team Building", "Event", "Dining", "Other"].map((option) => <option key={option}>{option}</option>)}</select></label>
-      <label>Number of Guests<input name="Number of guests" type="number" min="1" /></label>
-      <label>Preferred Date<input name="Preferred date" type="date" /></label>
-      <label>Number of Nights / Days<input name="Number of nights or days" type="number" min="1" /></label>
-      <label className="field-wide">Message<textarea name="Message" rows={4} placeholder="Tell us a little about your plans." /></label>
-      <div className="form-action field-wide"><Button type="submit" variant="accent" size="xl">Send Enquiry <ArrowRight /></Button><p>Prefer WhatsApp? <a href={`${whatsappUrl}?text=${encodeURIComponent("Hello Kongoni Camp, I would like to make an enquiry.")}`} target="_blank" rel="noreferrer">Message reservations</a>.</p></div>
-      {notice && <p className="form-notice field-wide" role="status">{notice}</p>}
-    </form>
-  );
-}
-
-function ContactSection() {
-  const browserKey = import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY"];
-  const mapSrc = browserKey ? `https://www.google.com/maps/embed/v1/place?key=${browserKey}&q=place_id:ChIJ2ciqtbH3hxcRmHQS6YRUb9c` : "";
-  return (
-    <section id="contact" className="contact-section">
-      <div className="page-shell contact-heading"><SectionLabel>Plan your visit</SectionLabel><h2>Planning a stay, trip or programme?</h2><p>Tell us what you're planning and we'll help you find the right option at Kongoni.</p></div>
-      <div className="page-shell contact-grid">
-        <EnquiryForm />
-        <aside className="contact-details">
-          <div><SectionLabel>Find Kongoni Camp</SectionLabel><h3>Kongoni Camp Nanyuki</h3><p>Located along the A2 at the Nanyuki town gate, approximately 5 minutes from Nanyuki CBD.</p></div>
-          <div className="map-frame">{mapSrc ? <iframe title="Kongoni Camp location on Google Maps" src={mapSrc} loading="lazy" referrerPolicy="no-referrer-when-downgrade" allowFullScreen /> : <div className="map-fallback"><MapPin /><span>Interactive map loads when map access is available.</span></div>}</div>
-          <div className="contact-actions"><Button asChild><a href="https://maps.google.com/?cid=15523719370392106136" target="_blank" rel="noreferrer"><MapPin /> Get Directions</a></Button><Button asChild variant="outline"><a href={`tel:${phoneHref}`}><Phone /> Call</a></Button><Button asChild variant="outline"><a href={whatsappUrl} target="_blank" rel="noreferrer"><MessageCircle /> WhatsApp</a></Button></div>
-          <a className="contact-link" href={`mailto:${email}`}><Mail />{email}</a>
-        </aside>
-      </div>
-    </section>
-  );
-}
-
-function FAQ() {
-  return <section className="section page-shell faq-section"><div><SectionLabel>Good to know</SectionLabel><h2>Frequently asked questions.</h2></div><div className="faq-list">{faqItems.map(([question, answer]) => <details key={question}><summary>{question}<ChevronDown /></summary><p>{answer}</p></details>)}</div></section>;
-}
-
-function Footer() {
-  return (
-    <footer className="footer">
-      <div className="footer-image"><PhotoPlaceholder label="Warm evening view at Kongoni Camp" className="footer-photo" /><div className="footer-image__overlay"><h2>Make Kongoni part of your Nanyuki plans.</h2><p>Whether you're coming for a night, a weekend, a meeting, a group programme or a Laikipia adventure, we'd be happy to have you.</p><div className="button-row"><Button asChild variant="accent" size="xl"><a href="#contact">Plan Your Stay</a></Button><Button asChild variant="heroOutline" size="xl"><a href={`tel:${phoneHref}`}>Contact Kongoni</a></Button></div></div></div>
-      <div className="footer-main page-shell">
-        <div className="footer-brand"><img src="/kongoni logo.png" alt="Kongoni Camp Nanyuki" className="footer-logo" width={140} height={60} /><p>Kongoni Camp is a hospitality and accommodation destination in Nanyuki, Laikipia, offering stays, dining, meetings, retreats and access to the wider Nanyuki experience.</p></div>
-        <div><h3>Explore</h3>{navigation.slice(0, 5).map(([label, href]) => <a href={href} key={href}>{label}</a>)}</div>
-        <div><h3>Contact</h3><a href={`tel:${phoneHref}`}>{phoneDisplay}</a><a href={whatsappUrl} target="_blank" rel="noreferrer">WhatsApp</a><a href={`mailto:${email}`}>{email}</a><a href="https://maps.google.com/?cid=15523719370392106136" target="_blank" rel="noreferrer">Google Maps</a></div>
-        <div><h3>Follow</h3><a href="https://www.facebook.com/KongoniCampNanyuki" target="_blank" rel="noreferrer"><Facebook /> Facebook</a><a href="https://www.instagram.com/kongoninanyuki/" target="_blank" rel="noreferrer"><Instagram /> Instagram</a><a href="https://twitter.com/kongonicamp1" target="_blank" rel="noreferrer">X / Twitter</a><a href="https://www.tiktok.com/@kongoni.camp.nany" target="_blank" rel="noreferrer">TikTok</a></div>
-      </div>
-      <div className="footer-bottom page-shell"><span>© {new Date().getFullYear()} Kongoni Camp. All rights reserved.</span><span><a href="#contact">Privacy Policy</a><a href="#contact">Terms</a><a href="http://www.kongonicamp.com/" target="_blank" rel="noreferrer">kongonicamp.com</a></span></div>
-    </footer>
-  );
-}
-
-function MobileBar() {
-  return <div className="mobile-bar"><a href={`tel:${phoneHref}`}><Phone />Call</a><a href={whatsappUrl} target="_blank" rel="noreferrer"><MessageCircle />WhatsApp</a><a href="#contact"><Mail />Enquire</a></div>;
 }
 
 export function KongoniLanding() {
-  return <><Header /><main><Hero /><Intro /><StaySection /><AudienceSection /><MeetingsSection /><GroupsAndDining /><ExploreSection /><TravelTrade /><WhyNanyuki /><Facts /><Gallery /><FAQ /><ContactSection /></main><Footer /><MobileBar /></>;
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [notice, setNotice] = useState("");
+
+  const handleEnquirySubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = new FormData(e.currentTarget);
+    const lines = [
+      "Kongoni Camp Nanyuki - Website Enquiry",
+      "-------------------------------------",
+      ...Array.from(form.entries()).map(([k, v]) => `${k}: ${v}`),
+    ];
+    setNotice("Opening your email client with your reservation details...");
+    const enquiryType = String(form.get("Enquiry Type") || "General Enquiry");
+    window.location.href = `mailto:${email}?subject=${encodeURIComponent(`Kongoni Enquiry — ${enquiryType}`)}&body=${encodeURIComponent(lines.join("\n"))}`;
+  };
+
+  return (
+    <div className="landing-page min-h-screen bg-background text-foreground">
+      {/* 1. CLEAN TOP BRAND BAR - NO MENUS */}
+      <header className="absolute top-0 left-0 right-0 z-40 py-5 px-6 md:px-12 flex items-center justify-between border-b border-white/15">
+        <a href="#top" className="flex items-center gap-3">
+          <img
+            src="/kongoni logo.png"
+            alt="Kongoni Camp Nanyuki"
+            className="h-10 md:h-12 w-auto filter invert brightness-200"
+            width={130}
+            height={50}
+          />
+        </a>
+        <div className="flex items-center gap-3 md:gap-4">
+          <a
+            href={`tel:${phoneHref}`}
+            className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-white/90 hover:text-white transition"
+          >
+            <Phone className="w-3.5 h-3.5 text-highlight" />
+            <span>{phoneDisplay}</span>
+          </a>
+          <Button asChild variant="accent" size="sm" className="font-semibold shadow-lg">
+            <a href="#contact">Enquire & Book</a>
+          </Button>
+        </div>
+      </header>
+
+      {/* 2. HERO SECTION */}
+      <section id="top" className="relative min-h-[92vh] flex items-center text-white isolate overflow-hidden">
+        {/* Real photo background: Thatched cottages and floral gardens */}
+        <img
+          src="/kongoni-camp-nanyuki4.jpg"
+          alt="Kongoni Camp Nanyuki thatched cottages and gardens"
+          className="absolute inset-0 w-full h-full object-cover -z-20 scale-105 transition-transform duration-1000"
+        />
+        {/* Deep rich earthy gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/65 to-black/35 -z-10" />
+
+        <div className="page-shell w-full pt-28 pb-16 md:py-36">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-xs font-medium uppercase tracking-widest text-white/90 mb-6">
+              <MapPin className="w-3.5 h-3.5 text-highlight" />
+              <span>Nanyuki, Laikipia, Kenya • Along the A2</span>
+            </div>
+
+            <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-serif font-normal leading-[0.95] text-white tracking-tight mb-6">
+              Stay. Meet.<br />
+              <span className="italic font-light text-amber-200/90">Explore</span> Laikipia.
+            </h1>
+
+            <p className="text-base sm:text-lg md:text-xl text-white/85 leading-relaxed font-light mb-8 max-w-2xl">
+              A serene 10-acre hospitality sanctuary at the foot of Mount Kenya. 
+              Authentic thatched rondavels, superior deluxe suites, sparkling pool, fireside dining, 
+              and versatile retreat spaces for travellers, families, and organisations.
+            </p>
+
+            <div className="flex flex-wrap items-center gap-4 mb-10">
+              <Button asChild variant="accent" size="xl" className="font-semibold shadow-xl">
+                <a href="#contact">
+                  Plan Your Visit <ArrowRight className="w-4 h-4 ml-1" />
+                </a>
+              </Button>
+              <Button asChild variant="heroOutline" size="xl" className="font-medium backdrop-blur-sm">
+                <a href={whatsappUrl} target="_blank" rel="noreferrer">
+                  <MessageCircle className="w-4 h-4 mr-1 text-emerald-400" />
+                  Chat on WhatsApp
+                </a>
+              </Button>
+            </div>
+
+            {/* Quick feature highlights */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-6 border-t border-white/20 text-xs text-white/80 font-medium">
+              <div className="flex items-center gap-2">
+                <Check className="w-4 h-4 text-highlight flex-shrink-0" />
+                <span>10 Lush Acres</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Check className="w-4 h-4 text-highlight flex-shrink-0" />
+                <span>Outdoor Swimming Pool</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Check className="w-4 h-4 text-highlight flex-shrink-0" />
+                <span>5 Mins to Nanyuki CBD</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Check className="w-4 h-4 text-highlight flex-shrink-0" />
+                <span>Mt Kenya & Safari Gateway</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. WELCOME & SANCTUARY OVERVIEW */}
+      <section className="py-20 md:py-28 bg-muted/40 border-b border-border">
+        <div className="page-shell">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+            <div className="lg:col-span-6 space-y-6">
+              <SectionBadge>Welcome to Kongoni Camp</SectionBadge>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-normal text-foreground leading-tight">
+                An Authentic Natural Haven at the Gateway of Nanyuki.
+              </h2>
+              <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
+                Tucked away along the A2 highway at the Nanyuki town gate, Kongoni Camp blends 
+                the rustic spirit of classic Kenyan safari hospitality with contemporary comforts.
+              </p>
+              <p className="text-muted-foreground text-base leading-relaxed">
+                Whether you are summiting Mount Kenya, embarking on game drives across Ol Pejeta, 
+                escaping on a weekend retreat, holding a high-level board workshop, or touring with a group, 
+                our tranquil grounds provide a warm, peaceful home base.
+              </p>
+
+              <div className="grid grid-cols-2 gap-6 pt-4">
+                <div className="border-l-2 border-highlight pl-4">
+                  <span className="block text-2xl font-serif text-primary font-bold">10 Acres</span>
+                  <span className="text-xs text-muted-foreground uppercase tracking-wider">Mature Private Grounds</span>
+                </div>
+                <div className="border-l-2 border-highlight pl-4">
+                  <span className="block text-2xl font-serif text-primary font-bold">24 / 7</span>
+                  <span className="text-xs text-muted-foreground uppercase tracking-wider">Warm Kenyan Hospitality</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Real photo: Thatched Poolside Spa & Lawns */}
+            <div className="lg:col-span-6">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-border group">
+                <img
+                  src="/poolside-spa_03.jpg"
+                  alt="Kongoni Camp Poolside Spa Pavilion and lush green lawn"
+                  className="w-full h-[420px] md:h-[500px] object-cover group-hover:scale-105 transition-transform duration-700"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent" />
+                <div className="absolute bottom-6 left-6 right-6 text-white">
+                  <span className="text-xs font-semibold uppercase tracking-widest text-amber-300">Relaxation & Wellness</span>
+                  <h3 className="text-xl font-serif mt-1">Poolside Thatched Spa Pavilion</h3>
+                  <p className="text-xs text-white/80 mt-1">Serene lawn setting overlooking the swimming pool and indigenous trees.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. ACCOMMODATION (STAY) - REAL ROOM PHOTOS */}
+      <section className="py-20 md:py-28 bg-background">
+        <div className="page-shell">
+          <div className="max-w-2xl mb-14">
+            <SectionBadge>Stay at Kongoni</SectionBadge>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-normal text-foreground leading-tight">
+              Comfortable Accommodation Surrounded by Nature.
+            </h2>
+            <p className="text-muted-foreground mt-4 text-base md:text-lg">
+              Choose from traditional thatched rondavels, spacious superior deluxe suites, and comfortable cottage rooms tailored for individuals, couples, families, and retreat groups.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
+            {staysList.map((stay) => (
+              <div
+                key={stay.name}
+                className="bg-card rounded-2xl overflow-hidden border border-border shadow-md hover:shadow-xl transition-all duration-300 flex flex-col group"
+              >
+                <div className="relative h-64 sm:h-72 overflow-hidden bg-muted">
+                  <img
+                    src={stay.image}
+                    alt={stay.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    loading="lazy"
+                  />
+                  <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-semibold tracking-wider uppercase text-amber-200 border border-white/10">
+                    {stay.type}
+                  </div>
+                </div>
+
+                <div className="p-6 sm:p-8 flex flex-col flex-1">
+                  <h3 className="text-2xl font-serif font-normal text-foreground mb-2">
+                    {stay.name}
+                  </h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed mb-6 flex-1">
+                    {stay.copy}
+                  </p>
+
+                  <div className="grid grid-cols-2 gap-2 text-xs text-foreground/80 mb-6 pt-4 border-t border-border">
+                    {stay.highlights.map((item) => (
+                      <span key={item} className="flex items-center gap-1.5">
+                        <Check className="w-3.5 h-3.5 text-highlight flex-shrink-0" />
+                        <span>{item}</span>
+                      </span>
+                    ))}
+                  </div>
+
+                  <Button asChild variant="outline" className="w-full justify-between group-hover:border-primary">
+                    <a href="#contact">
+                      <span>Reserve this stay</span>
+                      <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                    </a>
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 5. MEET & GATHER (CONFERENCES & CORPORATE RETREATS) */}
+      <section className="py-20 md:py-28 bg-primary text-primary-foreground">
+        <div className="page-shell">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            {/* Real photo: Multi-tier lodge & restaurant interior */}
+            <div className="lg:col-span-6 relative">
+              <div className="rounded-2xl overflow-hidden shadow-2xl border border-white/15">
+                <img
+                  src="/kongoni-camp-nanyuki restaurant.jpg"
+                  alt="Kongoni Camp lodge interior and gathering space"
+                  className="w-full h-[400px] md:h-[480px] object-cover"
+                  loading="lazy"
+                />
+              </div>
+              {/* Overlapping small garden photo */}
+              <div className="hidden sm:block absolute -bottom-8 -right-6 w-52 h-44 rounded-xl overflow-hidden shadow-2xl border-4 border-primary">
+                <img
+                  src="/kongoni-camp-nanyuki_006.jpg"
+                  alt="Kongoni outdoor retreat grounds"
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+
+            <div className="lg:col-span-6 space-y-6">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-white/10 text-amber-200 border border-white/20">
+                Meet & Collaborate
+              </span>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-normal leading-tight text-white">
+                Space to Think, Align, and Bring People Together.
+              </h2>
+              <p className="text-white/80 text-base md:text-lg leading-relaxed">
+                Corporate retreats, NGO seminars, board strategies, and team-building sessions 
+                thrive in Kongoni's quiet, distraction-free natural setting.
+              </p>
+
+              <div className="grid grid-cols-2 gap-3 text-sm text-white/90 pt-2">
+                {[
+                  "Executive Board Retreats",
+                  "Training & Workshops",
+                  "Outdoor Team-Building",
+                  "NGO & Institutional Seminars",
+                  "Full AV & Projection",
+                  "Tailored Catering Packages",
+                  "Residential Conferencing",
+                  "Spacious Garden Grounds",
+                ].map((item) => (
+                  <div key={item} className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-highlight flex-shrink-0" />
+                    <span>{item}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="pt-4 flex flex-wrap gap-4">
+                <Button asChild variant="accent" size="lg" className="shadow-lg">
+                  <a href="#contact">Request Conference Package</a>
+                </Button>
+                <Button asChild variant="heroOutline" size="lg">
+                  <a href={whatsappUrl} target="_blank" rel="noreferrer">
+                    <MessageCircle className="w-4 h-4 mr-1 text-emerald-400" />
+                    Talk to Event Coordinator
+                  </a>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. DINING & POOLSIDE LEISURE */}
+      <section className="py-20 md:py-28 bg-muted/30">
+        <div className="page-shell">
+          <div className="max-w-2xl mb-14">
+            <SectionBadge>Dining & Relaxation</SectionBadge>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-normal text-foreground leading-tight">
+              Flavours by the Fire, Leisure by the Pool.
+            </h2>
+            <p className="text-muted-foreground mt-4 text-base md:text-lg">
+              Fresh cuisine, warm fireside evenings, and sun-drenched afternoons in the pool.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+            {/* Dining card */}
+            <div className="bg-card rounded-2xl overflow-hidden border border-border shadow-md flex flex-col group">
+              <div className="relative h-72 sm:h-80 overflow-hidden">
+                <img
+                  src="/kongoni-camp-nanyuki restaurant.jpg"
+                  alt="Kongoni Camp Fireside Restaurant"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                <div className="absolute bottom-5 left-5 right-5 text-white">
+                  <span className="text-xs uppercase font-semibold tracking-wider text-amber-300">Restaurant & Bar</span>
+                  <h3 className="text-2xl font-serif mt-1">Fireside Dining & Lounge</h3>
+                </div>
+              </div>
+              <div className="p-6 sm:p-8 flex-1 flex flex-col justify-between">
+                <p className="text-muted-foreground text-sm leading-relaxed mb-6">
+                  Savour continental delights, authentic Kenyan flavours, and custom group menus. 
+                  In the cool Nanyuki evenings, gather around our rustic indoor fireplace stove for drinks, conversation, and warm comfort.
+                </p>
+                <div className="flex items-center gap-4 text-xs font-semibold text-primary">
+                  <span>🍽️ Breakfast, Lunch & Dinner</span>
+                  <span>🍷 Fully Stocked Bar</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Pool card */}
+            <div className="bg-card rounded-2xl overflow-hidden border border-border shadow-md flex flex-col group">
+              <div className="relative h-72 sm:h-80 overflow-hidden">
+                <img
+                  src="/kongoni-camp-nanyuki1.jpg"
+                  alt="Kongoni Camp outdoor swimming pool"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                <div className="absolute bottom-5 left-5 right-5 text-white">
+                  <span className="text-xs uppercase font-semibold tracking-wider text-amber-300">Sun & Rejuvenation</span>
+                  <h3 className="text-2xl font-serif mt-1">Outdoor Swimming Pool & Sundeck</h3>
+                </div>
+              </div>
+              <div className="p-6 sm:p-8 flex-1 flex flex-col justify-between">
+                <p className="text-muted-foreground text-sm leading-relaxed mb-6">
+                  Take a refreshing dip in our sparkling outdoor pool surrounded by tall native trees. 
+                  Unwind on comfortable sun loungers under shade umbrellas with refreshing drinks and snacks.
+                </p>
+                <div className="flex items-center gap-4 text-xs font-semibold text-primary">
+                  <span>🏊 Heated Sunshine & Deck</span>
+                  <span>🌴 Lush Forest Backdrop</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. EXPLORE LAIKIPIA & MT KENYA */}
+      <section className="py-20 md:py-28 bg-background border-t border-border">
+        <div className="page-shell">
+          <div className="max-w-2xl mb-14">
+            <SectionBadge>Explore From Kongoni</SectionBadge>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-normal text-foreground leading-tight">
+              Your Launchpad to Kenya's Wildlife & Mountain Wonders.
+            </h2>
+            <p className="text-muted-foreground mt-4 text-base md:text-lg">
+              Positioned right at the town gate on the A2, Kongoni puts you minutes from East Africa's greatest safari and trekking icons.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                title: "Ol Pejeta Conservancy",
+                dist: "25 mins drive",
+                desc: "Home to the world's last northern white rhinos, the Sweetwaters Chimpanzee Sanctuary, and the Big Five.",
+              },
+              {
+                title: "Mount Kenya National Park",
+                dist: "20 mins to Sirimon Gate",
+                desc: "UNESCO World Heritage site with dramatic peaks, moorlands, and world-class trekking routes.",
+              },
+              {
+                title: "Ngare Ndare Forest",
+                dist: "40 mins drive",
+                desc: "Spectacular canopy walkway, natural azure pools, cascading waterfalls, and elephant corridors.",
+              },
+              {
+                title: "Solio Ranch & Lewa",
+                dist: "35 mins drive",
+                desc: "Renowned rhino breeding sanctuary and world-celebrated conservation landscapes.",
+              },
+            ].map((dest, i) => (
+              <div
+                key={dest.title}
+                className="p-6 rounded-2xl bg-card border border-border hover:border-primary/50 transition-colors shadow-sm"
+              >
+                <span className="text-highlight text-xs font-mono font-bold">0{i + 1}</span>
+                <h3 className="text-xl font-serif text-foreground mt-2 mb-1">{dest.title}</h3>
+                <span className="inline-block text-xs font-semibold text-primary/80 mb-3">{dest.dist}</span>
+                <p className="text-muted-foreground text-xs leading-relaxed">{dest.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 8. PHOTO GALLERY SHOWCASE - ALL 7 REAL PHOTOS */}
+      <section className="py-20 md:py-28 bg-muted/40">
+        <div className="page-shell">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+            <div>
+              <SectionBadge>Real Photography</SectionBadge>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-normal text-foreground leading-tight">
+                A Visual Tour of Kongoni Camp.
+              </h2>
+            </div>
+            <p className="text-muted-foreground text-sm max-w-md">
+              Explore authentic photos of our cottages, suites, dining room, swimming pool, and gardens. Click any photo to view full size.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {galleryPhotos.map((photo, index) => (
+              <button
+                key={photo.src}
+                type="button"
+                onClick={() => setLightboxIndex(index)}
+                className="group relative rounded-xl overflow-hidden bg-card border border-border text-left focus:outline-none focus:ring-2 focus:ring-primary aspect-[4/3]"
+              >
+                <img
+                  src={photo.src}
+                  alt={photo.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-85 group-hover:opacity-95 transition-opacity" />
+                <div className="absolute bottom-4 left-4 right-4 text-white">
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-amber-300">
+                    {photo.tag}
+                  </span>
+                  <h4 className="text-base font-serif font-medium mt-0.5">{photo.title}</h4>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* LIGHTBOX MODAL */}
+      {lightboxIndex !== null && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 md:p-10"
+          onClick={() => setLightboxIndex(null)}
+        >
+          <button
+            type="button"
+            onClick={() => setLightboxIndex(null)}
+            className="absolute top-6 right-6 text-white hover:text-amber-300 transition p-2 rounded-full bg-white/10"
+            aria-label="Close image viewer"
+          >
+            <X className="w-6 h-6" />
+          </button>
+          <div
+            className="max-w-4xl w-full max-h-[85vh] flex flex-col items-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={galleryPhotos[lightboxIndex].src}
+              alt={galleryPhotos[lightboxIndex].title}
+              className="max-h-[70vh] w-auto object-contain rounded-xl shadow-2xl border border-white/20"
+            />
+            <div className="text-center mt-4 text-white">
+              <span className="text-xs uppercase tracking-widest text-amber-300 font-semibold">
+                {galleryPhotos[lightboxIndex].tag}
+              </span>
+              <h3 className="text-2xl font-serif mt-1">{galleryPhotos[lightboxIndex].title}</h3>
+              <p className="text-sm text-white/80 max-w-xl mx-auto mt-1">
+                {galleryPhotos[lightboxIndex].caption}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 9. FAQ SECTION */}
+      <section className="py-20 md:py-28 bg-background border-t border-border">
+        <div className="page-shell">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            <div className="lg:col-span-4">
+              <SectionBadge>Good to Know</SectionBadge>
+              <h2 className="text-3xl sm:text-4xl font-serif font-normal text-foreground leading-tight">
+                Frequently Asked Questions.
+              </h2>
+              <p className="text-muted-foreground text-sm mt-4">
+                Have another question or need a customized quote? Feel free to reach out directly via WhatsApp or telephone.
+              </p>
+              <div className="mt-6">
+                <Button asChild variant="outline" size="sm">
+                  <a href={whatsappUrl} target="_blank" rel="noreferrer">
+                    <MessageCircle className="w-4 h-4 mr-2 text-emerald-500" />
+                    Ask on WhatsApp
+                  </a>
+                </Button>
+              </div>
+            </div>
+
+            <div className="lg:col-span-8 divide-y divide-border border-y border-border">
+              {faqItems.map((item) => (
+                <details key={item.q} className="group py-5">
+                  <summary className="flex justify-between items-center cursor-pointer list-none text-lg font-serif text-foreground group-hover:text-primary transition">
+                    <span>{item.q}</span>
+                    <ChevronDown className="w-5 h-5 text-muted-foreground group-open:rotate-180 transition-transform duration-200 ml-4 flex-shrink-0" />
+                  </summary>
+                  <p className="text-sm text-muted-foreground mt-3 leading-relaxed pr-6">
+                    {item.a}
+                  </p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 10. DIRECT ENQUIRY & BOOKING FORM */}
+      <section id="contact" className="py-20 md:py-28 bg-primary text-primary-foreground">
+        <div className="page-shell">
+          <div className="max-w-3xl mx-auto text-center mb-16">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-white/10 text-amber-200 border border-white/20 mb-3">
+              Direct Reservations & Enquiries
+            </span>
+            <h2 className="text-3xl sm:text-5xl font-serif font-normal text-white leading-tight">
+              Plan Your Visit to Kongoni Camp.
+            </h2>
+            <p className="text-white/80 mt-4 text-base md:text-lg">
+              Fill in your details below for swift reservation confirmation, or message our team directly.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+            {/* The Form */}
+            <div className="lg:col-span-7 bg-white text-foreground p-8 sm:p-10 rounded-2xl shadow-2xl">
+              <form onSubmit={handleEnquirySubmit} className="space-y-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">
+                      Your Full Name *
+                    </label>
+                    <input
+                      name="Full Name"
+                      required
+                      className="w-full px-4 py-2.5 rounded-lg border border-border bg-muted/20 focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                      placeholder="e.g. Sarah Mwangi"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">
+                      Phone Number *
+                    </label>
+                    <input
+                      name="Phone Number"
+                      type="tel"
+                      required
+                      className="w-full px-4 py-2.5 rounded-lg border border-border bg-muted/20 focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                      placeholder="+254 700 000 000"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">
+                      Email Address *
+                    </label>
+                    <input
+                      name="Email Address"
+                      type="email"
+                      required
+                      className="w-full px-4 py-2.5 rounded-lg border border-border bg-muted/20 focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                      placeholder="you@example.com"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">
+                      Enquiry Purpose *
+                    </label>
+                    <select
+                      name="Enquiry Type"
+                      required
+                      defaultValue=""
+                      className="w-full px-4 py-2.5 rounded-lg border border-border bg-muted/20 focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                    >
+                      <option value="" disabled>Select one</option>
+                      <option value="Accommodation Booking">Accommodation (Individual / Couple)</option>
+                      <option value="Family Holiday">Family Holiday</option>
+                      <option value="Tour Operator / Safari Group">Tour Operator / Safari Group</option>
+                      <option value="Corporate Retreat / Conference">Corporate Retreat / Conference</option>
+                      <option value="Team Building Programme">Team Building Programme</option>
+                      <option value="Dining or Private Event">Dining or Private Event</option>
+                      <option value="Other">Other Enquiry</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">
+                      Estimated Guests
+                    </label>
+                    <input
+                      name="Guests"
+                      type="number"
+                      min="1"
+                      placeholder="2"
+                      className="w-full px-4 py-2.5 rounded-lg border border-border bg-muted/20 focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">
+                      Preferred Date
+                    </label>
+                    <input
+                      name="Date"
+                      type="date"
+                      className="w-full px-4 py-2.5 rounded-lg border border-border bg-muted/20 focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">
+                      Number of Nights
+                    </label>
+                    <input
+                      name="Nights"
+                      type="number"
+                      min="1"
+                      placeholder="2"
+                      className="w-full px-4 py-2.5 rounded-lg border border-border bg-muted/20 focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">
+                    Your Requirements & Questions
+                  </label>
+                  <textarea
+                    name="Message"
+                    rows={4}
+                    className="w-full px-4 py-2.5 rounded-lg border border-border bg-muted/20 focus:outline-none focus:ring-2 focus:ring-primary text-sm resize-none"
+                    placeholder="Tell us about your trip, room preferences, dietary requirements, or meeting needs..."
+                  />
+                </div>
+
+                <div className="pt-2">
+                  <Button type="submit" variant="accent" size="xl" className="w-full font-semibold shadow-lg">
+                    Send Reservation Enquiry <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </div>
+
+                {notice && (
+                  <p className="text-xs text-primary font-medium text-center bg-primary/10 p-3 rounded-lg">
+                    {notice}
+                  </p>
+                )}
+              </form>
+            </div>
+
+            {/* Direct Contacts & Map Details */}
+            <div className="lg:col-span-5 space-y-8">
+              <div>
+                <h3 className="text-2xl font-serif text-white mb-2">Direct Contact</h3>
+                <p className="text-white/80 text-sm leading-relaxed">
+                  Our reservations desk is ready to assist you seven days a week with bookings and inquiries.
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <a
+                  href={`tel:${phoneHref}`}
+                  className="flex items-center gap-4 p-4 rounded-xl bg-white/10 hover:bg-white/15 transition border border-white/10"
+                >
+                  <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-highlight">
+                    <Phone className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <span className="block text-xs text-white/70 uppercase">Call Reservations</span>
+                    <span className="text-base font-semibold text-white">{phoneDisplay}</span>
+                  </div>
+                </a>
+
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-4 p-4 rounded-xl bg-emerald-600/30 hover:bg-emerald-600/40 transition border border-emerald-400/30"
+                >
+                  <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+                    <MessageCircle className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <span className="block text-xs text-emerald-200 uppercase">Chat Directly</span>
+                    <span className="text-base font-semibold text-white">Instant WhatsApp Chat</span>
+                  </div>
+                </a>
+
+                <a
+                  href={`mailto:${email}`}
+                  className="flex items-center gap-4 p-4 rounded-xl bg-white/10 hover:bg-white/15 transition border border-white/10"
+                >
+                  <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-highlight">
+                    <Mail className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <span className="block text-xs text-white/70 uppercase">Email Us</span>
+                    <span className="text-base font-semibold text-white">{email}</span>
+                  </div>
+                </a>
+
+                <div className="flex items-start gap-4 p-4 rounded-xl bg-white/10 border border-white/10">
+                  <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-highlight flex-shrink-0 mt-0.5">
+                    <MapPin className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <span className="block text-xs text-white/70 uppercase">Location</span>
+                    <span className="text-sm font-medium text-white">
+                      Along the A2 Highway at Nanyuki Town Gate, Laikipia County, Kenya (5 mins from CBD)
+                    </span>
+                    <a
+                      href="https://maps.google.com/?cid=15523719370392106136"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1 text-xs text-amber-300 font-semibold mt-2 hover:underline"
+                    >
+                      Open in Google Maps <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 11. FOOTER - CLEAN, BRAND-FOCUSED, NO MENUS */}
+      <footer className="bg-[#121c15] text-white/80 border-t border-white/10 pt-16 pb-12">
+        <div className="page-shell">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-white/10 items-start">
+            <div className="md:col-span-6 space-y-4">
+              <img
+                src="/kongoni logo.png"
+                alt="Kongoni Camp Nanyuki"
+                className="h-12 w-auto filter invert brightness-200"
+                width={140}
+                height={55}
+              />
+              <p className="text-sm text-white/70 max-w-md leading-relaxed">
+                Kongoni Camp Nanyuki offers comfortable stays in thatched cottages and luxury suites, 
+                conferencing facilities, fireside dining, and an outdoor swimming pool on 10 lush acres in Laikipia, Kenya.
+              </p>
+              <p className="text-xs text-highlight font-semibold tracking-wider uppercase">
+                Stay. Meet. Explore.
+              </p>
+            </div>
+
+            <div className="md:col-span-3 space-y-3">
+              <h4 className="text-xs uppercase font-semibold tracking-widest text-white">Direct Connect</h4>
+              <p className="text-sm"><a href={`tel:${phoneHref}`} className="hover:text-white transition">{phoneDisplay}</a></p>
+              <p className="text-sm"><a href={whatsappUrl} target="_blank" rel="noreferrer" className="hover:text-white transition">WhatsApp Desk</a></p>
+              <p className="text-sm"><a href={`mailto:${email}`} className="hover:text-white transition">{email}</a></p>
+              <p className="text-sm">Nanyuki, Laikipia, Kenya</p>
+            </div>
+
+            <div className="md:col-span-3 space-y-3">
+              <h4 className="text-xs uppercase font-semibold tracking-widest text-white">Social Channels</h4>
+              <div className="flex flex-col gap-2 text-sm">
+                <a href="https://www.facebook.com/KongoniCampNanyuki" target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:text-white transition">
+                  <Facebook className="w-4 h-4 text-highlight" /> Facebook
+                </a>
+                <a href="https://www.instagram.com/kongoninanyuki/" target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:text-white transition">
+                  <Instagram className="w-4 h-4 text-highlight" /> Instagram
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/50">
+            <span>© {new Date().getFullYear()} Kongoni Camp Nanyuki. All rights reserved.</span>
+            <span>A comfortable base for exploring Mount Kenya & Laikipia.</span>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
 }
