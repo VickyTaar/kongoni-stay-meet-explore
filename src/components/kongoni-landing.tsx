@@ -129,8 +129,13 @@ function Header() {
   return (
     <header className="site-header">
       <a href="#top" className="wordmark" aria-label="Kongoni Camp home">
-        <span className="wordmark__symbol">K</span>
-        <span>Kongoni Camp<small>Nanyuki · Laikipia</small></span>
+        <img
+          src="/kongoni logo.png"
+          alt="Kongoni Camp Nanyuki"
+          className="site-logo"
+          width={120}
+          height={52}
+        />
       </a>
       <nav className="desktop-nav" aria-label="Main navigation">
         {navigation.map(([label, href]) => <a key={href} href={href}>{label}</a>)}
@@ -418,7 +423,7 @@ function Footer() {
     <footer className="footer">
       <div className="footer-image"><PhotoPlaceholder label="Warm evening view at Kongoni Camp" className="footer-photo" /><div className="footer-image__overlay"><h2>Make Kongoni part of your Nanyuki plans.</h2><p>Whether you're coming for a night, a weekend, a meeting, a group programme or a Laikipia adventure, we'd be happy to have you.</p><div className="button-row"><Button asChild variant="accent" size="xl"><a href="#contact">Plan Your Stay</a></Button><Button asChild variant="heroOutline" size="xl"><a href={`tel:${phoneHref}`}>Contact Kongoni</a></Button></div></div></div>
       <div className="footer-main page-shell">
-        <div className="footer-brand"><div className="wordmark wordmark--footer"><span className="wordmark__symbol">K</span><span>Kongoni Camp<small>Nanyuki · Laikipia</small></span></div><p>Kongoni Camp is a hospitality and accommodation destination in Nanyuki, Laikipia, offering stays, dining, meetings, retreats and access to the wider Nanyuki experience.</p></div>
+        <div className="footer-brand"><img src="/kongoni logo.png" alt="Kongoni Camp Nanyuki" className="footer-logo" width={140} height={60} /><p>Kongoni Camp is a hospitality and accommodation destination in Nanyuki, Laikipia, offering stays, dining, meetings, retreats and access to the wider Nanyuki experience.</p></div>
         <div><h3>Explore</h3>{navigation.slice(0, 5).map(([label, href]) => <a href={href} key={href}>{label}</a>)}</div>
         <div><h3>Contact</h3><a href={`tel:${phoneHref}`}>{phoneDisplay}</a><a href={whatsappUrl} target="_blank" rel="noreferrer">WhatsApp</a><a href={`mailto:${email}`}>{email}</a><a href="https://maps.google.com/?cid=15523719370392106136" target="_blank" rel="noreferrer">Google Maps</a></div>
         <div><h3>Follow</h3><a href="https://www.facebook.com/KongoniCampNanyuki" target="_blank" rel="noreferrer"><Facebook /> Facebook</a><a href="https://www.instagram.com/kongoninanyuki/" target="_blank" rel="noreferrer"><Instagram /> Instagram</a><a href="https://twitter.com/kongonicamp1" target="_blank" rel="noreferrer">X / Twitter</a><a href="https://www.tiktok.com/@kongoni.camp.nany" target="_blank" rel="noreferrer">TikTok</a></div>

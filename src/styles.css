@@ -170,6 +170,8 @@
 .wordmark { display: flex; align-items: center; gap: .7rem; font-family: var(--font-display); font-size: 1.15rem; line-height: 1; }
 .wordmark__symbol { display: grid; place-items: center; width: 2.35rem; height: 2.35rem; border: 1px solid currentColor; border-radius: 50%; font-size: 1.2rem; }
 .wordmark small { display: block; margin-top: .3rem; font-family: var(--font-sans); font-size: .58rem; letter-spacing: .15em; text-transform: uppercase; opacity: .75; }
+.site-logo { display: block; height: 48px; width: auto; filter: invert(1); }
+.footer-logo { display: block; height: 56px; width: auto; filter: invert(1); margin-bottom: .25rem; }
 .desktop-nav { display: flex; align-items: center; gap: clamp(1rem, 2vw, 2rem); font-size: .76rem; font-weight: 600; }
 .desktop-nav a { padding-block: .5rem; opacity: .82; transition: opacity .2s; }
 .desktop-nav a:hover { opacity: 1; }
