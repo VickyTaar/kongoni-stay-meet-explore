@@ -557,7 +557,7 @@ export function KongoniLanding() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               {
                 title: "Ol Pejeta Conservancy",
@@ -579,12 +579,22 @@ export function KongoniLanding() {
                 dist: "35 mins drive",
                 desc: "Renowned rhino breeding sanctuary and world-celebrated conservation landscapes.",
               },
+              {
+                title: "Ol Jogi Wildlife Conservancy",
+                dist: "1 hr 30 min drive",
+                desc: "A private Laikipia conservancy with remarkable wildlife diversity — rhinos, Grevy's zebras, and Potap, the only known bear in Africa.",
+              },
+              {
+                title: "Samburu National Reserve",
+                dist: "1 hr 30 min drive",
+                desc: "Rugged northern landscapes and rare wildlife — reticulated giraffe, gerenuk, Grevy's zebra, and elephants alongside vibrant Samburu culture.",
+              },
             ].map((dest, i) => (
               <div
                 key={dest.title}
                 className="p-6 rounded-2xl bg-card border border-border hover:border-primary/50 transition-colors shadow-sm"
               >
-                <span className="text-highlight text-xs font-mono font-bold">0{i + 1}</span>
+                <span className="text-highlight text-xs font-mono font-bold">{String(i + 1).padStart(2, '0')}</span>
                 <h3 className="text-xl font-serif text-foreground mt-2 mb-1">{dest.title}</h3>
                 <span className="inline-block text-xs font-semibold text-primary/80 mb-3">{dest.dist}</span>
                 <p className="text-muted-foreground text-xs leading-relaxed">{dest.desc}</p>
