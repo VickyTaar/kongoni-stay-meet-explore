@@ -86,7 +86,7 @@ const staysList = [
     type: "Spacious & Elegant",
     copy: "Our most expansive accommodation featuring high vaulted timber ceilings, generous seating lounge, stone flooring, African wildlife art, en-suite bathroom, and dedicated workspace.",
     image: "/superior-deluxe-room_006.jpg",
-    highlights: ["King Bed & Lounge Area", "Vaulted Timber Ceilings", "En-suite Bathroom & Wi-Fi", "Writing Desk & Veranda"],
+    highlights: ["King Bed & Lounge Area", "Vaulted Timber Ceilings", "En-suite Bathroom & Wi-Fi", "Interconnecting Options"],
   },
   {
     name: "Traditional Rondavels",
@@ -107,7 +107,7 @@ const staysList = [
     type: "Serene & Relaxed",
     copy: "Cottages surrounded by tranquil greenery, designed for families, safari travellers, tour groups, and retreat delegates seeking a comfortable base in Nanyuki.",
     image: "/kongoni-camp-nanyuki_006.jpg",
-    highlights: ["Interconnecting Options", "Lush Lawn Setting", "Ample Natural Light", "Ideal for Groups"],
+    highlights: ["Lush Lawn Setting", "Ample Natural Light", "Ideal for Groups", "Private Veranda"],
   },
 ];
 
@@ -134,7 +134,7 @@ const audiences = [
   },
   {
     title: "Team Building & Groups",
-    desc: "10 expansive acres of green grounds for dynamic outdoor team activities, sports, and group dining.",
+    desc: "Expansive green grounds for dynamic outdoor team activities, sports, and group dining.",
     icon: Trees,
   },
   {
@@ -247,7 +247,7 @@ export function KongoniLanding() {
             </h1>
 
             <p className="text-base sm:text-lg md:text-xl text-white/85 leading-relaxed font-light mb-8 max-w-2xl">
-              A serene 10-acre hospitality sanctuary at the foot of Mount Kenya. 
+              A serene hospitality sanctuary at the foot of Mount Kenya. 
               Authentic thatched rondavels, superior deluxe suites, sparkling pool, fireside dining, 
               and versatile retreat spaces for travellers, families, and organisations.
             </p>
@@ -270,7 +270,7 @@ export function KongoniLanding() {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-6 border-t border-white/20 text-xs text-white/80 font-medium">
               <div className="flex items-center gap-2">
                 <Check className="w-4 h-4 text-highlight flex-shrink-0" />
-                <span>10 Lush Acres</span>
+                <span>Lush Private Grounds</span>
               </div>
               <div className="flex items-center gap-2">
                 <Check className="w-4 h-4 text-highlight flex-shrink-0" />
@@ -310,8 +310,8 @@ export function KongoniLanding() {
 
               <div className="grid grid-cols-2 gap-6 pt-4">
                 <div className="border-l-2 border-highlight pl-4">
-                  <span className="block text-2xl font-serif text-primary font-bold">10 Acres</span>
-                  <span className="text-xs text-muted-foreground uppercase tracking-wider">Mature Private Grounds</span>
+                  <span className="block text-2xl font-serif text-primary font-bold">Lush Grounds</span>
+                  <span className="text-xs text-muted-foreground uppercase tracking-wider">Mature Private Gardens</span>
                 </div>
                 <div className="border-l-2 border-highlight pl-4">
                   <span className="block text-2xl font-serif text-primary font-bold">24 / 7</span>
@@ -406,12 +406,12 @@ export function KongoniLanding() {
       <section className="py-20 md:py-28 bg-primary text-primary-foreground">
         <div className="page-shell">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            {/* Real photo: Multi-tier lodge & restaurant interior */}
+            {/* Conference photo from GitHub */}
             <div className="lg:col-span-6 relative">
               <div className="rounded-2xl overflow-hidden shadow-2xl border border-white/15">
                 <img
-                  src="/kongoni-camp-nanyuki restaurant.jpg"
-                  alt="Kongoni Camp lodge interior and gathering space"
+                  src="/IMG_5617.jpg"
+                  alt="Kongoni Camp conference and meeting space"
                   className="w-full h-[400px] md:h-[480px] object-cover"
                   loading="lazy"
                 />
@@ -519,7 +519,7 @@ export function KongoniLanding() {
               <div className="relative h-72 sm:h-80 overflow-hidden">
                 <img
                   src="/kongoni-camp-nanyuki1.jpg"
-                  alt="Kongoni Camp outdoor swimming pool"
+                  alt="Kongoni Camp sparkling heated outdoor swimming pool"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   loading="lazy"
                 />
@@ -531,11 +531,11 @@ export function KongoniLanding() {
               </div>
               <div className="p-6 sm:p-8 flex-1 flex flex-col justify-between">
                 <p className="text-muted-foreground text-sm leading-relaxed mb-6">
-                  Take a refreshing dip in our sparkling outdoor pool surrounded by tall native trees. 
-                  Unwind on comfortable sun loungers under shade umbrellas with refreshing drinks and snacks.
+                  Sparkling heated outdoor swimming pool — the perfect place to unwind after a safari, 
+                  a mountain hike, or a long day of meetings. Relax on sun loungers with refreshing drinks and snacks.
                 </p>
                 <div className="flex items-center gap-4 text-xs font-semibold text-primary">
-                  <span>🏊 Heated Sunshine & Deck</span>
+                  <span>🏊 Heated Pool</span>
                   <span>🌴 Lush Forest Backdrop</span>
                 </div>
               </div>
@@ -946,7 +946,7 @@ export function KongoniLanding() {
               />
               <p className="text-sm text-white/70 max-w-md leading-relaxed">
                 Kongoni Camp Nanyuki offers comfortable stays in thatched cottages and luxury suites, 
-                conferencing facilities, fireside dining, and an outdoor swimming pool on 10 lush acres in Laikipia, Kenya.
+                conferencing facilities, fireside dining, and a sparkling heated outdoor swimming pool in Laikipia, Kenya.
               </p>
               <p className="text-xs text-highlight font-semibold tracking-wider uppercase">
                 Stay. Meet. Explore.
