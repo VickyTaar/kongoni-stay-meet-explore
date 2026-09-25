@@ -106,7 +106,7 @@ const staysList = [
     name: "Standard Rooms",
     type: "Comfortable & Relaxed",
     copy: "Welcoming rooms set within Kongoni's tranquil gardens, offering comfortable beds, private ensuite bathrooms, and garden views — ideal for leisure travellers and tour groups.",
-    image: "/Standard Rooms/standard-room_001.jpg",
+    image: "/standard-room_001.jpg",
     highlights: ["1 King Bed", "Ensuite Bathroom", "Garden View", "Wi-Fi"],
   },
 ];
