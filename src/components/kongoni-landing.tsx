@@ -99,7 +99,7 @@ const staysList = [
     name: "Deluxe Cottage Rooms",
     type: "Warm & Atmospheric",
     copy: "Intimate and comfortable rooms appointed with handcrafted batik art, warm hearth lighting, comfortable bedding, and garden outlooks for restful stays.",
-    image: "/kongoni-camp-nanyuki5.jpg",
+    image: "/deluxe-cottage-room.jpg",
     highlights: ["Handcrafted Textiles", "Bed Canopy / Net", "Cozy Fireside Feel", "Garden Views"],
   },
   {
